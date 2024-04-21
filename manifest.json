@@ -1,0 +1,10 @@
+{
+  "domain": "somafm",
+  "version": "0.0.1",
+  "name": "SomaFM",
+  "codeowners": ["@maddyblue"],
+  "config_flow": true,
+  "documentation": "https://github.com/maddyblue/home-assistant-somafm",
+  "integration_type": "service",
+  "iot_class": "cloud_polling"
+}
