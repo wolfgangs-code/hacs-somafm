@@ -1,7 +1,7 @@
 {
   "domain": "somafm",
   "name": "SomaFM",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "documentation": "https://github.com/maddyblue/hass-somafm/#readme",
   "issue_tracker": "https://github.com/maddyblue/hass-somafm/issues",
   "codeowners": ["@maddyblue", "@wolfgangs-code"],
