@@ -77,8 +77,9 @@ class SomaFMMediaSource(MediaSource):
             can_expand=True,
             children_media_class=MediaClass.DIRECTORY,
             children=[
-                *await self._async_build_by_genre(somafm, item),
                 *await self._async_build_by_name(somafm, item),
+                *await self._async_build_by_genre(somafm, item),
+                *await self._async_build_by_popularity(somafm, item),
             ],
         )
 
@@ -103,6 +104,28 @@ class SomaFMMediaSource(MediaSource):
             )
 
         return items
+
+    async def _async_build_by_name(
+        self, somafm: SomaFM, item: MediaSourceItem
+    ) -> list[BrowseMediaSource]:
+        """Handle browsing radio stations by name."""
+        if item.identifier == "name":
+            stations = await somafm.stations()
+            stations.sort(key=lambda s: s.title.lower())
+            return self.build_stations(somafm, stations)
+        if not item.identifier:
+            return [
+                BrowseMediaSource(
+                    domain=DOMAIN,
+                    identifier="name",
+                    media_class=MediaClass.DIRECTORY,
+                    media_content_type=MediaType.MUSIC,
+                    title="A-Z",
+                    can_play=False,
+                    can_expand=True,
+                )
+            ]
+        return []
 
     async def _async_build_by_genre(
         self, somafm: SomaFM, item: MediaSourceItem
@@ -143,14 +166,14 @@ class SomaFMMediaSource(MediaSource):
                     can_expand=True,
                 )
             ]
-
         return []
 
-    async def _async_build_by_name(
+    async def _async_build_by_popularity(
         self, somafm: SomaFM, item: MediaSourceItem
     ) -> list[BrowseMediaSource]:
-        """Handle browsing radio stations by name."""
-        if item.identifier is not None:
-            return []
-        stations = await somafm.stations()
-        return self.build_stations(somafm, stations)
+        """Handle browsing radio stations by popularity."""
+        if not item.identifier:
+            stations = await somafm.stations()
+            stations.sort(key=lambda s: s.listeners, reverse=True)
+            return self.build_stations(somafm, stations)
+        return []

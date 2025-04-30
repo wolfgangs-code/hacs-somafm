@@ -13,7 +13,7 @@ Simply add the link to this repo as a custom repository with the **Integration**
 Clone this repository to `{CONFIG}/custom_components/somafm`, then restart Home Assistant.
 
 ## Screenshot
-![image](https://github.com/maddyblue/hass-somafm/assets/41181/6b496e00-97f4-477a-9009-7353584ad88d)
+![image](/preview.png)
 
 ## Credits
 * Integration by [Maddy Blue](https://github.com/maddyblue/)
