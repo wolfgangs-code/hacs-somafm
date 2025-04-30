@@ -97,11 +97,12 @@ def parse_stations(text: str) -> list[Station]:
         name = chan.attrib["id"]
         title = chan.find("title").text
         genres = chan.find("genre").text.split("|")
-        image = chan.find("image").text
+        listeners = int(chan.find("listeners").text)
+        image = chan.find("largeimage").text
         stream = chan.find("highestpls")
         addr = stream.text
         format = stream.get("format")
-        stations.append(Station(name, title, image, genres, format, addr))
+        stations.append(Station(name, title, image, genres, listeners, format, addr))
     return stations
 
 
@@ -124,15 +125,17 @@ class Station:
     title: str
     image: str
     genres: list[str]
+    listeners: int
     format: str
     addr: str
     mime_type: str
 
-    def __init__(self, name, title, image, genres, format, addr) -> None:
+    def __init__(self, name, title, image, genres, listeners, format, addr) -> None:
         self.name = name
         self.title = title
         self.image = image
         self.genres = genres
+        self.listeners = listeners
         self.format = format
         self.addr = addr
         self.mime_type = CODEC_TO_MIMETYPE[format.upper()]
