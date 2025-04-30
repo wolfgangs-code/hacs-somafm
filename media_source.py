@@ -167,6 +167,7 @@ class SomaFMMediaSource(MediaSource):
                     can_expand=True,
                 )
             ]
+        return []
                 
     async def _async_build_by_name(
         self, somafm: SomaFM, item: MediaSourceItem
