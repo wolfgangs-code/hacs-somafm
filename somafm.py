@@ -98,7 +98,7 @@ def parse_stations(text: str) -> list[Station]:
         title = chan.find("title").text
         genres = chan.find("genre").text.split("|")
         listeners = int(chan.find("listeners").text)
-        image = chan.find("image").text
+        image = chan.find("largeimage").text
         stream = chan.find("highestpls")
         addr = stream.text
         format = stream.get("format")
