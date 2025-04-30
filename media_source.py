@@ -78,6 +78,7 @@ class SomaFMMediaSource(MediaSource):
             children_media_class=MediaClass.DIRECTORY,
             children=[
                 *await self._async_build_by_genre(somafm, item),
+                *await self._async_build_by_popularity(somafm, item),
                 *await self._async_build_by_name(somafm, item),
             ],
         )
@@ -146,6 +147,27 @@ class SomaFMMediaSource(MediaSource):
 
         return []
 
+    async def _async_build_by_popularity(
+        self, somafm: SomaFM, item: MediaSourceItem
+    ) -> list[BrowseMediaSource]:
+        """Handle browsing radio stations by popularity."""
+        if item.identifier == "popularity":
+            stations = await somafm.stations()
+            stations.sort(key=lambda s: s.listeners, reverse=True)
+            return self.build_stations(somafm, stations)
+        if item.identifier is None:
+            return [
+                BrowseMediaSource(
+                    domain=DOMAIN,
+                    identifier="popularity",
+                    media_class=MediaClass.DIRECTORY,
+                    media_content_type=MediaType.MUSIC,
+                    title="By Popularity",
+                    can_play=False,
+                    can_expand=True,
+                )
+            ]
+                
     async def _async_build_by_name(
         self, somafm: SomaFM, item: MediaSourceItem
     ) -> list[BrowseMediaSource]:
